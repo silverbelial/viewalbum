@@ -5,6 +5,8 @@ const (
 	FrameScratch = 0x000
 	//FrameWithData with data field
 	FrameWithData = 0x001
+
+	defaultErrorCode = 500
 )
 
 //Frame frame object for response
@@ -25,4 +27,10 @@ func PrepareFrame(mode int) *Frame {
 		f.Data = struct{}{}
 	}
 	return f
+}
+
+//RecordComplain set error into msg
+func (f *Frame) RecordComplain(err error) {
+	f.Status = defaultErrorCode
+	f.Message = err.Error()
 }

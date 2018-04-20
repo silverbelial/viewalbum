@@ -2,7 +2,7 @@ package viewalbum
 
 //Viewer interface type for context/controller type that handles requests and response
 type Viewer interface {
-	ServeJSONObject(interface{})
+	ServeJSONObject(interface{}, ...bool)
 	SetParam(string, interface{})
 	ServeHTMLFile(string)
 }

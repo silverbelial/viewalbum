@@ -96,3 +96,25 @@ func GetTemplateName() string {
 	}
 	return currentTemplate.TemplateName()
 }
+
+//DisplayTemplateView display registered vo with template feature
+func DisplayTemplateView(vr StubbornViewer, vn string) {
+	if currentTemplate == nil {
+		return
+	}
+	tagVoMutex.RLock()
+	vo, has := tagVo[vn]
+	tagVoMutex.RUnlock()
+	if !has {
+		return
+	}
+	coverMutex.RLock()
+	for _, ac := range covers {
+		ac.PreProcess(vr)
+	}
+	coverMutex.RUnlock()
+	vr.ServeReplacable(GetLayoutName(), vo.HTMLFile)
+	if vo.JsFile != nil {
+		vr.SetParam("JsPath", *vo.JsFile)
+	}
+}

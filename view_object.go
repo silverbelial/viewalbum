@@ -1,6 +1,8 @@
 package viewalbum
 
 import (
+	"fmt"
+	"os"
 	"sync"
 )
 
@@ -67,7 +69,31 @@ func buildVo(htmlFile, jsFile, cssFile, title, uri string, parent *ViewObject) *
 	if cssFile != "" {
 		vo.CSSFile = &cssFile
 	}
+	vo.prepareLocation()
 	return vo
+}
+
+func (vo *ViewObject) prepareLocation() {
+	//current view template name
+	templateName := GetTemplateName()
+	if templateName != "" {
+		path := fmt.Sprintf("views/%s/%s", templateName, vo.HTMLFile)
+		if _, err := os.Stat(path); !os.IsNotExist(err) {
+			vo.Location = fmt.Sprintf("%s/", templateName)
+		}
+	} else {
+		path := fmt.Sprintf("views/%s", vo.HTMLFile)
+		if _, err := os.Stat(path); !os.IsNotExist(err) {
+			vo.Location = ""
+		}
+	}
+
+	if vo.JsFile != nil {
+		path := fmt.Sprintf("views/scripts/%s/%s", templateName, *vo.JsFile)
+		if _, err := os.Stat(path); !os.IsNotExist(err) {
+			*vo.JsFile = templateName + "/" + *vo.JsFile
+		}
+	}
 }
 
 //DisplayView main entrance for display registered view

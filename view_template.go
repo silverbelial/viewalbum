@@ -108,6 +108,11 @@ func DisplayTemplateView(vr StubbornViewer, vn string) {
 	if !has {
 		return
 	}
+	DisplayTemplateViewObject(vr, vo)
+}
+
+//DisplayTemplateViewObject display vo with template feature
+func DisplayTemplateViewObject(vr StubbornViewer, vo *ViewObject) {
 	coverMutex.RLock()
 	for _, ac := range covers {
 		ac.PreProcess(vr)

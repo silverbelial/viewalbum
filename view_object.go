@@ -41,19 +41,21 @@ func (vo *ViewObject) css() (string, bool) {
 }
 
 //RegisterViewObject register child view object
-func (vo *ViewObject) RegisterViewObject(tag, htmlFile, jsFile, cssFile, title, uri string) {
+func (vo *ViewObject) RegisterViewObject(tag, htmlFile, jsFile, cssFile, title, uri string) *ViewObject {
 	cvo := buildVo(htmlFile, jsFile, cssFile, title, uri, nil)
 	tagVoMutex.Lock()
 	defer tagVoMutex.Unlock()
 	tagVo[tag] = cvo
+	return cvo
 }
 
 //RegisterRootViewObject register root vo into view album
-func RegisterRootViewObject(tag, htmlFile, jsFile, cssFile, title, uri string) {
+func RegisterRootViewObject(tag, htmlFile, jsFile, cssFile, title, uri string) *ViewObject {
 	vo := buildVo(htmlFile, jsFile, cssFile, title, uri, nil)
 	tagVoMutex.Lock()
 	defer tagVoMutex.Unlock()
 	tagVo[tag] = vo
+	return vo
 }
 
 func buildVo(htmlFile, jsFile, cssFile, title, uri string, parent *ViewObject) *ViewObject {

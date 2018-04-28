@@ -24,6 +24,7 @@ type ViewObject struct {
 	Location string
 	Parent   *ViewObject
 	Link     string
+	MenuItem *AlbumMenu
 }
 
 func (vo *ViewObject) js() (string, bool) {

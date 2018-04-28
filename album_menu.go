@@ -19,6 +19,34 @@ type AlbumMenu struct {
 	URL           string
 	SubMenu       []*AlbumMenu
 	AcceptRoles   []int
+	ViewObject    *ViewObject
+}
+
+//IsCurrent return if menu is current
+func (m *AlbumMenu) IsCurrent(vo *ViewObject) bool {
+	cvo := m.ViewObject
+	for vo != nil {
+		if cvo == vo {
+			return true
+		}
+		cvo = cvo.Parent
+	}
+	for _, sm := range m.SubMenu {
+		if sm.IsCurrent(vo) {
+			return true
+		}
+	}
+	return false
+}
+
+//HasSub returns menu has sub
+func (m *AlbumMenu) HasSub() bool {
+	return len(m.SubMenu) > 0
+}
+
+//Authorized returns is current user is authorized to view this menu
+func (m *AlbumMenu) Authorized() bool {
+	return true
 }
 
 //RegsiterRootMenu register vo as root menu
@@ -29,6 +57,7 @@ func RegsiterRootMenu(vo *ViewObject, icon string, roles []int) *AlbumMenu {
 		URL:           vo.Link,
 		SubMenu:       make([]*AlbumMenu, 0, 5),
 		AcceptRoles:   roles,
+		ViewObject:    vo,
 	}
 	menus = append(menus, m)
 	return m
@@ -42,6 +71,7 @@ func (m *AlbumMenu) RegisterSubMenu(vo *ViewObject, icon string, roles []int) *A
 		URL:           vo.Link,
 		SubMenu:       make([]*AlbumMenu, 0, 5),
 		AcceptRoles:   roles,
+		ViewObject:    vo,
 	}
 	m.SubMenu = append(m.SubMenu, sm)
 	return sm

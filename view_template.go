@@ -118,6 +118,7 @@ func DisplayTemplateViewObject(vr StubbornViewer, vo *ViewObject) {
 		ac.PreProcess(vr)
 	}
 	coverMutex.RUnlock()
+	vr.SetParam("vo", vo)
 	vr.ServeReplacable(GetLayoutName(), vo.HTMLFile)
 	if vo.JsFile != nil {
 		vr.SetParam("JsPath", *vo.JsFile)

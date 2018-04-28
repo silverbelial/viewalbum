@@ -25,7 +25,7 @@ type AlbumMenu struct {
 //IsCurrent return if menu is current
 func (m *AlbumMenu) IsCurrent(vo *ViewObject) bool {
 	cvo := m.ViewObject
-	for vo != nil {
+	for cvo != nil {
 		if cvo == vo {
 			return true
 		}

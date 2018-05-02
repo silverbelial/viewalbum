@@ -6,6 +6,7 @@ type Viewer interface {
 	SetParam(string, interface{})
 	ServeHTMLFile(string)
 	ProvideQuery(string) string
+	ViewerBody() []byte
 }
 
 //StubbornViewer interface type for context/controller type that handles viewtemplate requests

@@ -5,7 +5,7 @@ type Viewer interface {
 	ServeJSONObject(interface{}, ...bool)
 	SetParam(string, interface{})
 	ServeHTMLFile(string)
-	ProvideQuery(string) string
+	ProvideQuery(string) (string, bool)
 	ViewerBody() []byte
 }
 

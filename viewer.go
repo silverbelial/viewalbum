@@ -5,6 +5,7 @@ type Viewer interface {
 	ServeJSONObject(interface{}, ...bool)
 	SetParam(string, interface{})
 	ServeHTMLFile(string)
+	ProvideQuery(string) string
 }
 
 //StubbornViewer interface type for context/controller type that handles viewtemplate requests

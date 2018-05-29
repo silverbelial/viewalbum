@@ -119,7 +119,7 @@ func DisplayTemplateViewObject(vr StubbornViewer, vo *ViewObject) {
 		ac.PreProcess(vr)
 	}
 	coverMutex.RUnlock()
-	if vo.MenuItem != nil && !TryOpen(vo.MenuItem.AcceptRoles) {
+	if vo.MenuItem != nil && !TryOpen(vr, vo.MenuItem.AcceptRoles) {
 		rv, ok := vr.(ReflectiveViewer)
 		if ok {
 			rv.AcceptError(http.StatusForbidden, "Access Denied")

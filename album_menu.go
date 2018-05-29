@@ -112,15 +112,15 @@ type MenuCover struct {
 //PreProcess implements AlbumCover
 func (mc *MenuCover) PreProcess(vr Viewer) {
 	ms := GetMenus()
-	ms = menuLock(ms)
+	ms = menuLock(vr, ms)
 	vr.SetParam(mc.ParamKey, ms)
 }
 
-func menuLock(ms []*AlbumMenu) []*AlbumMenu {
+func menuLock(vr Viewer, ms []*AlbumMenu) []*AlbumMenu {
 	r := make([]*AlbumMenu, 0, len(ms))
 	for _, m := range ms {
-		if TryOpen(m.AcceptRoles) {
-			m.SubMenu = menuLock(m.SubMenu)
+		if TryOpen(vr, m.AcceptRoles) {
+			m.SubMenu = menuLock(vr, m.SubMenu)
 			r = append(r, m)
 		}
 	}

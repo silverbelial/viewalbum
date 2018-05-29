@@ -10,7 +10,7 @@ func init() {
 
 //AlbumLock access control interface
 type AlbumLock interface {
-	HasAccess([]int) bool
+	HasAccess(Viewer, []int) bool
 }
 
 //AddLock add lock to album system
@@ -19,9 +19,9 @@ func AddLock(lock AlbumLock) {
 }
 
 //TryOpen test accessability
-func TryOpen(r []int) bool {
+func TryOpen(v Viewer, r []int) bool {
 	for _, lock := range currentLocks {
-		if !lock.HasAccess(r) {
+		if !lock.HasAccess(v, r) {
 			return false
 		}
 	}

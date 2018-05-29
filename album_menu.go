@@ -22,6 +22,24 @@ type AlbumMenu struct {
 	ViewObject    *ViewObject
 }
 
+//DeepClone make a copy of itself
+func (m *AlbumMenu) DeepClone() *AlbumMenu {
+	c := &AlbumMenu{
+		Title:         m.Title,
+		IconClassName: m.IconClassName,
+		URL:           m.URL,
+		SubMenu:       make([]*AlbumMenu, 0, len(m.SubMenu)),
+		AcceptRoles:   m.AcceptRoles,
+		ViewObject:    m.ViewObject,
+	}
+
+	for _, sub := range m.SubMenu {
+		c.SubMenu = append(c.SubMenu, sub.DeepClone())
+	}
+
+	return c
+}
+
 //IsCurrent return if menu is current
 func (m *AlbumMenu) IsCurrent(vo *ViewObject) bool {
 	cvo := m.ViewObject
@@ -79,7 +97,11 @@ func (m *AlbumMenu) RegisterSubMenu(vo *ViewObject, icon string, roles []int) *A
 
 //GetMenus return menus
 func GetMenus() []*AlbumMenu {
-	return menus
+	ms := make([]*AlbumMenu, 0, len(menus))
+	for _, menu := range menus {
+		ms = append(ms, menu.DeepClone())
+	}
+	return ms
 }
 
 //MenuCover pre-defined cover for
@@ -89,8 +111,20 @@ type MenuCover struct {
 
 //PreProcess implements AlbumCover
 func (mc *MenuCover) PreProcess(vr Viewer) {
-	//TODO check role
-	vr.SetParam(mc.ParamKey, GetMenus())
+	ms := GetMenus()
+	ms = menuLock(ms)
+	vr.SetParam(mc.ParamKey, ms)
+}
+
+func menuLock(ms []*AlbumMenu) []*AlbumMenu {
+	r := make([]*AlbumMenu, 0, len(ms))
+	for _, m := range ms {
+		if TryOpen(m.AcceptRoles) {
+			m.SubMenu = menuLock(m.SubMenu)
+			r = append(r, m)
+		}
+	}
+	return r
 }
 
 //EnableMenuCover enable MenuCover

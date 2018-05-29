@@ -2,6 +2,7 @@ package viewalbum
 
 import (
 	"errors"
+	"net/http"
 	"sync"
 )
 
@@ -118,6 +119,14 @@ func DisplayTemplateViewObject(vr StubbornViewer, vo *ViewObject) {
 		ac.PreProcess(vr)
 	}
 	coverMutex.RUnlock()
+	if vo.MenuItem != nil && !TryOpen(vo.MenuItem.AcceptRoles) {
+		rv, ok := vr.(ReflectiveViewer)
+		if ok {
+			rv.AcceptError(http.StatusForbidden, "Access Denied")
+		}
+		return
+	}
+
 	vr.SetParam("vo", vo)
 	vr.ServeReplacable(GetLayoutName(), vo.HTMLFile)
 	if vo.JsFile != nil {

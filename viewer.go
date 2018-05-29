@@ -19,3 +19,8 @@ type StubbornViewer interface {
 type MemoryViewer interface {
 	RememberStaticLoc(string, string)
 }
+
+//ReflectiveViewer a viewer can handle error
+type ReflectiveViewer interface {
+	AcceptError(int, string)
+}

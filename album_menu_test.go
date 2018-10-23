@@ -1,19 +1,18 @@
-package viewalbum_test
+package viewalbum
 
 import (
 	"testing"
-	"viewalbum"
 )
 
 func TestAlbumMenu(t *testing.T) {
-	m := viewalbum.RegsiterRootMenu(&viewalbum.ViewObject{
+	m := RegsiterRootMenu(&ViewObject{
 		Title: "Root",
 		Link:  "/root",
 	}, "", []int{0})
-	m.RegisterSubMenu(&viewalbum.ViewObject{
+	m.RegisterSubMenu(&ViewObject{
 		Title: "Sub", Link: "/root/sub",
 	}, "", []int{0})
-	ms := viewalbum.GetMenus()
+	ms := GetMenus()
 	if len(ms) == 0 {
 		t.Log("root length failed")
 		t.Fail()

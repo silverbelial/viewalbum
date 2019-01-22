@@ -20,6 +20,8 @@ type AlbumMenu struct {
 	SubMenu       []*AlbumMenu
 	AcceptRoles   []int
 	ViewObject    *ViewObject
+
+	I18nKey string
 }
 
 //DeepClone make a copy of itself
@@ -31,6 +33,7 @@ func (m *AlbumMenu) DeepClone() *AlbumMenu {
 		SubMenu:       make([]*AlbumMenu, 0, len(m.SubMenu)),
 		AcceptRoles:   m.AcceptRoles,
 		ViewObject:    m.ViewObject,
+		I18nKey:       m.I18nKey,
 	}
 
 	for _, sub := range m.SubMenu {
@@ -69,6 +72,11 @@ func (m *AlbumMenu) Authorized() bool {
 
 //RegsiterRootMenu register vo as root menu
 func RegsiterRootMenu(vo *ViewObject, icon string, roles []int) *AlbumMenu {
+	return RegisterRootMenuI18n(vo, icon, roles, "")
+}
+
+//RegisterRootMenuI18n register vo as root menu with i18n feature
+func RegisterRootMenuI18n(vo *ViewObject, icon string, roles []int, i18nKey string) *AlbumMenu {
 	m := &AlbumMenu{
 		Title:         vo.Title,
 		IconClassName: icon,
@@ -76,6 +84,7 @@ func RegsiterRootMenu(vo *ViewObject, icon string, roles []int) *AlbumMenu {
 		SubMenu:       make([]*AlbumMenu, 0, 5),
 		AcceptRoles:   roles,
 		ViewObject:    vo,
+		I18nKey:       i18nKey,
 	}
 	menus = append(menus, m)
 	return m
@@ -83,6 +92,11 @@ func RegsiterRootMenu(vo *ViewObject, icon string, roles []int) *AlbumMenu {
 
 //RegisterSubMenu register sub menu
 func (m *AlbumMenu) RegisterSubMenu(vo *ViewObject, icon string, roles []int) *AlbumMenu {
+	return m.RegisterSubMenuI18n(vo, icon, roles, "")
+}
+
+//RegisterSubMenuI18n register sub menu with i18n feature
+func (m *AlbumMenu) RegisterSubMenuI18n(vo *ViewObject, icon string, roles []int, i18nKey string) *AlbumMenu {
 	sm := &AlbumMenu{
 		Title:         vo.Title,
 		IconClassName: icon,
@@ -90,6 +104,7 @@ func (m *AlbumMenu) RegisterSubMenu(vo *ViewObject, icon string, roles []int) *A
 		SubMenu:       make([]*AlbumMenu, 0, 5),
 		AcceptRoles:   roles,
 		ViewObject:    vo,
+		I18nKey:       i18nKey,
 	}
 	m.SubMenu = append(m.SubMenu, sm)
 	return sm

@@ -70,8 +70,8 @@ func (m *AlbumMenu) Authorized() bool {
 	return true
 }
 
-//RegsiterRootMenu register vo as root menu
-func RegisiterRootMenu(vo *ViewObject, icon string, roles []int) *AlbumMenu {
+//RegisterRootMenu register vo as root menu
+func RegisterRootMenu(vo *ViewObject, icon string, roles []int) *AlbumMenu {
 	return RegisterRootMenuI18n(vo, icon, roles, "")
 }
 

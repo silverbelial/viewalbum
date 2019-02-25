@@ -5,7 +5,7 @@ import (
 )
 
 func TestAlbumMenu(t *testing.T) {
-	m := RegsiterRootMenu(&ViewObject{
+	m := RegisterRootMenu(&ViewObject{
 		Title: "Root",
 		Link:  "/root",
 	}, "", []int{0})
